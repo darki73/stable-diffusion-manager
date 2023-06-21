@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stable Diffusion Image Viewer</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+<body>
+    <h1>Stable Diffusion Image Viewer</h1>
+    <ul>
+        {% for folder in folders %}
+            <li>
+                <a href="/{{ folder }}">{{ folder }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
