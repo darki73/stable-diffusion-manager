@@ -36,7 +36,15 @@
         <div class="image-container">
           <img src="{{ url_for('static', filename=folder + '/' + image) }}" alt="{{ image }}">
         </div>
+        {% if parameters %}
+        <div>
+          <textarea id="parameters-textbox" rows="4" style="width: 100%;">{{ parameters }}</textarea>
+        </div>
+        {% endif %}
         <div class="buttons-container">
+          {% if parameters %}
+          <button class="btn btn-secondary" type="button" id="copy-button">Copy</button>
+          {% endif %}
           <button class="btn btn-primary" type="button" id="go-back">Go Back</button>
         </div>
       </form>
@@ -46,6 +54,12 @@
     <script>
         document.getElementById('go-back').addEventListener('click', function() {
             window.location.href = '/{{ folder }}';
+        });
+
+        document.getElementById('copy-button')?.addEventListener('click', function() {
+          const textarea = document.getElementById('parameters-textbox');
+          textarea.select();
+          document.execCommand('copy');
         });
     </script>
 </body>

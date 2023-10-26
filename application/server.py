@@ -1,6 +1,7 @@
 from os import path, remove
 from application import Configuration, Storage
-from flask import Flask, render_template, jsonify, request, Response
+from flask import Flask, render_template, jsonify, request, redirect, url_for, Response
+from PIL import Image
 
 
 # Class: Server
@@ -77,7 +78,27 @@ class Server:
 
     # Image Route: /<folder>/<image>
     def _image_route(self, folder: str, image: str) -> str:
-        return render_template("image.html", folder=folder, image=image)
+        file_path = path.join(
+            self.get_storage().get_images_path(),
+            folder,
+            image
+        )
+
+        if not path.exists(file_path):
+            return redirect(url_for("_index_route"))
+        
+        image_handle = Image.open(file_path)
+        
+        metadata = image_handle.info
+
+        if 'parameters' in metadata:
+            parameters = metadata['parameters'].replace("\n", "\n\n").replace(", ", ",\n").replace("Negative prompt: ", "Negative prompt:\n")
+        else:
+            parameters = None
+
+        image_handle.close()
+
+        return render_template("image.html", folder=folder, image=image, parameters=parameters)
 
     # Delete Image Route: /delete
     def _delete_image_route(self) -> Response:
