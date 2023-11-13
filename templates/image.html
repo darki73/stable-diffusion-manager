@@ -42,10 +42,16 @@
         </div>
         {% endif %}
         <div class="buttons-container">
+          <button class="btn btn-primary" type="button" id="go-back">Go Back</button>
+          {% if previous_image %}
+          <button class="btn btn-info" type="button" id="previous-image">Previous Image</button>
+          {% endif %}
+          {% if next_image %}
+          <button class="btn btn-success" type="button" id="next-image">Next Image</button>
+          {% endif %}
           {% if parameters %}
           <button class="btn btn-secondary" type="button" id="copy-button">Copy</button>
           {% endif %}
-          <button class="btn btn-primary" type="button" id="go-back">Go Back</button>
         </div>
       </form>
     </main>
@@ -54,6 +60,14 @@
     <script>
         document.getElementById('go-back').addEventListener('click', function() {
             window.location.href = '/{{ folder }}';
+        });
+
+        document.getElementById('next-image').addEventListener('click', function() {
+            window.location.href = '/{{ folder }}/{{ next_image }}';
+        });
+
+        document.getElementById('previous-image').addEventListener('click', function() {
+            window.location.href = '/{{ folder }}/{{ previous_image }}';
         });
 
         document.getElementById('copy-button')?.addEventListener('click', function() {

@@ -92,13 +92,38 @@ class Server:
         metadata = image_handle.info
 
         if 'parameters' in metadata:
-            parameters = metadata['parameters'].replace("\n", "\n\n").replace(", ", ",\n").replace("Negative prompt: ", "Negative prompt:\n")
+            parameters = metadata['parameters']
         else:
             parameters = None
 
         image_handle.close()
 
-        return render_template("image.html", folder=folder, image=image, parameters=parameters)
+
+        try:
+            folder_directory = path.join(self.get_storage().get_images_path(), folder)
+            images_list = self.get_storage().get_files(folder_directory)
+
+            current_index = images_list.index(image)
+            previous_image = images_list[current_index - 1] if current_index > 0 else None
+            next_image = images_list[current_index + 1] if current_index < len(images_list) - 1 else None
+
+            return render_template(
+                "image.html",
+                folder=folder,
+                image=image,
+                parameters=parameters,
+                previous_image=previous_image,
+                next_image=next_image
+            )
+        except ValueError:
+            return render_template(
+                "image.html",
+                folder=folder,
+                image=image,
+                parameters=parameters,
+                previous_image=None,
+                next_image=None
+            )
 
     # Delete Image Route: /delete
     def _delete_image_route(self) -> Response:
