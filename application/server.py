@@ -67,7 +67,8 @@ class Server:
         folders = self.get_storage().get_folders(
             self.get_storage().get_images_path(),
         )
-        return render_template("index.html", folders=folders)
+        sorted_folders = sorted(folders, reverse=True)
+        return render_template("index.html", folders=sorted_folders)
 
     # Images Route: /<folder>
     def _images_route(self, folder: str) -> str:
