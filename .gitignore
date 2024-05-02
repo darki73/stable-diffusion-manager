@@ -3,3 +3,4 @@
 __pycache__/
 application/__pycache__/
 configuration.yaml
+venv
